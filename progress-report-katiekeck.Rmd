@@ -9,3 +9,58 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Install packages needed
+
+```{r}
+install.packages("Lahman")
+library(Lahman)
+install.packages("rvest")
+library(rvest)
+library(dplyr)
+library(stringr)
+
+head(HallOfFame)
+```
+Get the data from the web
+
+```{r}
+url <- "https://www.baseball-reference.com/awards/hof_2024.shtml"
+
+webpage <- read_html(url)
+
+hof_table <- webpage %>%
+  html_table(fill = TRUE) %>%
+  .[[1]]
+
+head(hof_table)
+```
+
+Clean the data
+```{r}
+colnames(hof_table) <- hof_table[1, ]
+hof_table <- hof_table[-1, ]
+colnames(hof_table)
+
+ #add year id as 2024
+hof_table$yearID <- 2024
+
+#make column names same as HallOfFame data set
+cleaned_data <- hof_table %>%
+  select(Name, Votes, `%vote`) %>%
+  rename(
+    playerID = Name,
+    votes = Votes,
+    percent = `%vote`
+  ) %>%
+  #create inducted column
+  mutate(
+    percent = as.numeric(str_replace(percent, "%", "")),
+    inducted = ifelse(percent >= 75, "Y", "N"),
+    votedBy = "BBWAA"
+  )
+
+head(cleaned_data)
+
+```
+
+combine with 
