@@ -70,6 +70,36 @@ data$Votes <- as.numeric(data$Votes)
 ```
 
 
+Functions needed
+```{r}
+
+data <- data %>% select(-c(6:39))
+
+data <- data %>%
+  mutate(YoB = str_remove_all(YoB, "(st|nd|rd|th)$"))
+data <- data %>%
+  mutate(`%vote` = str_remove_all(`%vote`, "(%)$"))
+
+data <- data %>%
+  mutate(Name = gsub("^X-", "", Name))
+
+data <- data %>% mutate(
+  yearID = 2024,
+  inducted = ifelse(Votes>=289, "Y", "N"),
+) %>% rename(
+  votes = Votes)
+  
+View(tables[[1]])
+```
+
+
+CSV
+```{r}
+
+```
+
+
+
 
 
 

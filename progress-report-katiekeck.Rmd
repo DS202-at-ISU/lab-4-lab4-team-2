@@ -41,16 +41,17 @@ colnames(hof_table) <- hof_table[1, ]
 hof_table <- hof_table[-1, ]
 colnames(hof_table)
 
- #add year id as 2024
+#add year id as 2024
 hof_table$yearID <- 2024
 
 #make column names same as HallOfFame data set
 cleaned_data <- hof_table %>%
-  select(Name, Votes, `%vote`) %>%
+  select(Name, Votes, `%vote`, yearID) %>%
   rename(
     playerID = Name,
     votes = Votes,
-    percent = `%vote`
+    percent = `%vote`,
+    yearID = yearID
   ) %>%
   #create inducted column
   mutate(
@@ -62,5 +63,17 @@ cleaned_data <- hof_table %>%
 head(cleaned_data)
 
 ```
+Merge the two data frames and save the file
+```{r}
+hall_of_fame <- HallOfFame %>%
+  select(playerID, yearID, inducted) 
 
-combine with 
+cleaned_data <- cleaned_data %>%
+  select(playerID, yearID, inducted)
+
+combined_data <- rbind(hall_of_fame, cleaned_data)
+
+write.csv(combined_data, file="combined_data.csv", row.names = FALSE)
+
+```
+
