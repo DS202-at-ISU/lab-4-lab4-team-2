@@ -10,6 +10,48 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Anna's Lab Progress
 
 ```{r}
+library(tidyverse)
+
+#Hall of Fame Data Table
+library(Lahman)
+head(HallOfFame, 3)
+
+#Storing Data
+library(rvest)
+url <- "https://www.baseball-reference.com/awards/hof_2024.shtml"
+html <- read_html(url)
+tables <- html_table(html)
+
+#Viewing Data
+head(tables[[1]], 3)
+
+#Correcting Variables Names in Line 1 for Data Table
+data <- tables[[1]]
+actual_col_names <- data[1, ]
+colnames(data) <- actual_col_names
+data <- data[-1, ]
+head(data, 3)
+
+#Checking to Make Sure all Votes are Numeric Variables
+data$Votes <- as.numeric(data$Votes)
+
+#Deleting Unnecessary Columns
+data <- data %>% select(-c(6:39))
+
+
+
+#Fixing Numbers
+# Remove ordinal suffixes
+data <- data %>%
+  mutate(YoB = str_remove_all(YoB, "(st|nd|rd|th)$"))
+
+data <- data %>%
+  mutate(`%vote` = str_remove_all(`%vote`, "(%)$"))
+
+#Fixing Player Names
+data <- data %>%
+  mutate(Name = gsub("^X-", "", Name))
+
 
 
 
