@@ -63,7 +63,7 @@ cleaned_data <- hof_table %>%
 head(cleaned_data)
 
 ```
-Merge the two data frames
+Merge the two data frames and save the file
 ```{r}
 hall_of_fame <- HallOfFame %>%
   select(playerID, yearID, inducted) 
