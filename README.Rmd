@@ -19,13 +19,34 @@ All submissions to the github repo will be automatically uploaded for grading on
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-hof <- Lahman::HallOfFame
-hof %>% 
+Hof <- Lahman::HallOfFame
+Hof %>% 
   ggplot(aes(x = yearID, y = votes/needed*100, group=playerID)) +
   geom_hline(yintercept = 100, colour="grey70") + 
   geom_line() +
   geom_point(aes(colour = "inducted"), 
-    data = hof %>% filter(inducted=="Y")) +
+    data = Hof %>% filter(inducted=="Y")) +
   xlim(c(2000, 2022)) +
   ylab("Percent of votes")
+
+
+
+
+#Hall of Fame Players Inducted From 1936 to 2024
+Hof %>% 
+  ggplot(aes(x = yearID, fill = inducted)) +
+  geom_bar() +
+  xlim(c(1936, 2024)) +
+  labs(
+    title = "Hall of Fame Players Inducted From 1936 to 2024",
+    x = "Year",
+    y = "Count"
+  )
+
+
+#Exporting csv File
+write.csv(Hof, file="HallOfFame.csv", row.names = FALSE)
+readr::write_csv(Hof, file="HallOfFame.csv")
+
+
 ```
