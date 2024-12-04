@@ -38,28 +38,33 @@ data$Votes <- as.numeric(data$Votes)
 
 #Deleting Unnecessary Columns
 data <- data %>% select(-c(6:39))
-
-
-
-#Fixing Numbers
-# Remove ordinal suffixes
-data <- data %>%
-  mutate(YoB = str_remove_all(YoB, "(st|nd|rd|th)$"))
-
-data <- data %>%
-  mutate(`%vote` = str_remove_all(`%vote`, "(%)$"))
+data <- data %>% select(-c(`Rk`))
+data <- data %>% select(-c(`YoB`))
+data <- data %>% select(-c(`%vote`))
 
 #Fixing Player Names
 data <- data %>%
   mutate(Name = gsub("^X-", "", Name))
 
+data <- data %>% rename(playerID = Name)
 
 #Creating New Column if they are inducted or Not + Column YearID
-data <- data %>% mutate(
+data1 <- data %>% mutate(
   yearID = 2024,
+  votedBy = "BBWAA",
+  ballots = 385,
+  needed = 289,
   inducted = ifelse(Votes>=289, "Y", "N"),
+  category = NA, # don't know yet
+  needed_note = NA
 ) %>% rename(
   votes = Votes)
   
-  
+#Merging Tables
+data1 <- data1 %>% select(colnames(HallOfFame))
+Hof <- rbind(data1, HallOfFame)
+
 ```
+
+
+
