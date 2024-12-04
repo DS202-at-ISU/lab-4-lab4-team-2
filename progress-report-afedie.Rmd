@@ -8,6 +8,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Anna's Lab Progress
+### Data Cleaning
 
 ```{r}
 library(tidyverse)
@@ -53,6 +54,12 @@ data <- data %>%
   mutate(Name = gsub("^X-", "", Name))
 
 
-
-
+#Creating New Column if they are inducted or Not + Column YearID
+data <- data %>% mutate(
+  yearID = 2024,
+  inducted = ifelse(Votes>=289, "Y", "N"),
+) %>% rename(
+  votes = Votes)
+  
+  
 ```
