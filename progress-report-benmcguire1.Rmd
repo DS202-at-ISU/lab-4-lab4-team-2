@@ -9,10 +9,24 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
 ## R Markdown
 
-```{r setup}
-
-
-
+```{r}
+library(Lahman)
+head(HallOfFame, 3)
 ```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+HallOfFame %>% 
+  ggplot(aes(x = yearID, fill = inducted)) +
+  geom_bar() +
+  xlim(c(1936, 2022))
+```
+
+
+
+
