@@ -1,8 +1,7 @@
----
 title: "progress-report-afedie"
 output: html_document
 date: "2024-12-04"
----
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -15,6 +14,3 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```
-
-
-
