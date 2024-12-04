@@ -12,11 +12,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## R Markdown
 
+Lahmen Hall of Fame Table
 ```{r}
 library(Lahman)
 head(HallOfFame, 3)
 ```
 
+Hall of Fame Graph
 ```{r}
 library(dplyr)
 library(ggplot2)
@@ -26,6 +28,48 @@ HallOfFame %>%
   geom_bar() +
   xlim(c(1936, 2022))
 ```
+
+CSV
+```{r}
+
+write.csv(HallOfFame, "HallOfFame.csv", row.names = FALSE)
+
+```
+
+
+Scrape Baseball Reference
+```{r}
+
+library(rvest)
+url <- "https://www.baseball-reference.com/awards/hof_2024.shtml"
+html <- read_html(url)
+tables <- html_table(html)
+
+View(tables[[1]])
+```
+
+
+Variable Names in Line 1
+```{r}
+
+data <- tables[[1]]
+actual_col_names <- data[1, ]
+colnames(data) <- actual_col_names
+data <- data[-1, ]
+head(data, 3)
+
+```
+
+
+
+Check Variable Types
+```{r}
+
+data$Votes <- as.numeric(data$Votes)
+
+```
+
+
 
 
 
