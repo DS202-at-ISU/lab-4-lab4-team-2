@@ -27,6 +27,8 @@ HallOfFame %>%
   ggplot(aes(x = yearID, fill = inducted)) +
   geom_bar() +
   xlim(c(1936, 2022))
+
+View(HallOfFame)
 ```
 
 CSV
@@ -74,33 +76,45 @@ Functions needed
 ```{r}
 
 data <- data %>% select(-c(6:39))
+data <- data %>% select(-c(`Rk`))
+data <- data %>% select(-c(`YoB`))
+data <- data %>% select(-c(`%vote`))
 
-data <- data %>%
-  mutate(YoB = str_remove_all(YoB, "(st|nd|rd|th)$"))
-data <- data %>%
-  mutate(`%vote` = str_remove_all(`%vote`, "(%)$"))
 
+```
+
+
+Player Names
+```{r}
 data <- data %>%
   mutate(Name = gsub("^X-", "", Name))
 
-data <- data %>% mutate(
-  yearID = 2024,
-  inducted = ifelse(Votes>=289, "Y", "N"),
-) %>% rename(
-  votes = Votes)
-  
-View(tables[[1]])
+data <- data %>% rename(playerID = Name)
+
 ```
 
 
-CSV
+New Column
 ```{r}
 
+data1 <- data %>% mutate(
+  yearID = 2024,
+  votedBy = "BBWAA",
+  ballots = 385,
+  needed = 289,
+  inducted = ifelse(Votes>=289, "Y", "N"),
+  category = NA, # don't know yet
+  needed_note = NA
+) %>% rename(
+  votes = Votes)
+
 ```
 
 
+Merging Tables
+```{r}
 
+data1 <- data1 %>% select(colnames(HallOfFame))
+Hof <- rbind(data1, HallOfFame)
 
-
-
-
+```
