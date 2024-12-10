@@ -1,0 +1,27 @@
+title: "progress-report-katienels"
+output: html_document
+date: "2024-12-04"
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Katie's Lab Progress
+### Data Cleaning
+
+```{r}
+
+install.packages("Lahman")
+library(Lahman)
+install.packages("rvest")
+library(rvest)
+library(dplyr)
+library(stringr)
+
+head(HallOfFame)
+
+url <- "https://www.baseball-reference.com/awards/hof_2024.shtml"
+web <- read_html(url)
+
+
+```
